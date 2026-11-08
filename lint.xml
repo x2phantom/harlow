@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lint configuration for all modules (lint reads lint.xml from parent directories). -->
+<lint>
+    <issue id="NewerVersionAvailable">
+        <!-- Jellyfin SDK stays on 1.8.x: 1.9 requires Jellyfin server 12.0.0 or later (Jellyfin.minimumVersion), 1.8.x
+             speaks the 10.11 API and works with 10.11 and 12.x servers. -->
+        <ignore regexp="org\.jellyfin\.sdk:" />
+    </issue>
+</lint>

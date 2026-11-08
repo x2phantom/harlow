@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Phosphor Icons (MIT): the icon of ic_aa_albums with a Heart badge, the media center's "favorite album" custom action (not a favorite). -->
+<!-- The base icon nearly full size like Media3's icons, cut free where the heart sits so the outlined heart stays
+     readable at mdpi. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <group>
+        <clip-path android:pathData="M0,0H256V124H120V256H0Z" />
+        <group
+            android:pivotX="128"
+            android:pivotY="128"
+            android:scaleX="0.92"
+            android:scaleY="0.92">
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM72,128a8,8,0,0,1-16,0,72.08,72.08,0,0,1,72-72,8,8,0,0,1,0,16A56.06,56.06,0,0,0,72,128Zm32,0a24,24,0,1,1,24,24A24,24,0,0,1,104,128Zm24,72a8,8,0,0,1,0-16,56.06,56.06,0,0,0,56-56,8,8,0,0,1,16,0A72.08,72.08,0,0,1,128,200Z" />
+        </group>
+    </group>
+    <group
+        android:translateX="122"
+        android:translateY="112"
+        android:scaleX="0.54"
+        android:scaleY="0.54">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z" />
+    </group>
+</vector>

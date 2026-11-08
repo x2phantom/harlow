@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="login_close">Close</string>
+    <string name="login_subtitle">Connect to your Jellyfin server</string>
+    <string name="login_server_address">Server address</string>
+    <string name="login_server_address_hint">HTTPS only; https:// is added if you leave it out</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_sign_in">Sign in</string>
+</resources>

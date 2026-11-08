@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The folder icons again under another name, for the list view: the media center doesn't notice that only a folder's
+  layout hint changed, but it does redraw a folder whose icon URI changed (see HarlowMediaService.collectionIcon).
+-->
+<resources>
+    <item name="ic_aa_albums_list" type="drawable">@drawable/ic_aa_albums</item>
+    <item name="ic_aa_artists_list" type="drawable">@drawable/ic_aa_artists</item>
+    <item name="ic_aa_genres_list" type="drawable">@drawable/ic_aa_genres</item>
+    <item name="ic_aa_playlists_list" type="drawable">@drawable/ic_aa_playlists</item>
+    <item name="ic_aa_songs_list" type="drawable">@drawable/ic_aa_songs</item>
+</resources>

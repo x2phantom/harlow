@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- False positives of OWASP Dependency-Check: wrong CPEs for Maven artifacts. Each rule suppresses only the wrong CPE of
+     the named package, so real CVEs of these libraries (reported under their own CPEs) still show. -->
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+        androidx.sqlite is a Java/Kotlin wrapper around the platform's SQLite (android.database.sqlite); it ships no
+        SQLite of its own (no androidx.sqlite:sqlite-bundled). Its version 2.6.x is taken for the C library "SQLite 2.6",
+        so every SQLite CVE matches. Native SQLite on the head unit is the OS's (the OEM's updates).
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/androidx\.sqlite/sqlite.*@.*$</packageUrl>
+        <cpe>cpe:/a:sqlite:sqlite</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        The Jellyfin SDK (client library) is taken for the Jellyfin media server. All matched CVEs are in server
+        endpoints (ffmpeg arguments, subtitle upload, LiveTV, SyncPlay, /users …), not in the SDK.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jellyfin\.sdk/.*@.*$</packageUrl>
+        <cpe>cpe:/a:jellyfin:jellyfin</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        kotlin-logging (group io.github.oshai) is taken for GitHub Enterprise (CVE-2012-2055) because of "github" in the
+        group ID.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.github\.oshai/kotlin-logging.*@.*$</packageUrl>
+        <cpe>cpe:/a:github:github</cpe>
+    </suppress>
+</suppressions>

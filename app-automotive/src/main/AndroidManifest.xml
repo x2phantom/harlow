@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Android Automotive OS only. Everything else is optional, so the app installs on every head unit. -->
+    <uses-feature
+        android:name="android.hardware.type.automotive"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <!-- No POST_NOTIFICATIONS required on AAOS — notifications are system-managed -->
+    <!-- No REQUEST_INSTALL_PACKAGES on AAOS — updates come through the OEM's store -->
+
+    <!-- No backups: the database holds the Jellyfin access token (see data_extraction_rules.xml for Android 12+). -->
+    <application
+        android:name=".AutoApplication"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:appCategory="audio"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Harlow"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="31">
+
+        <!-- A media app on AAOS: the car's media center draws browsing and playback from HarlowMediaService. -->
+        <meta-data
+            android:name="com.android.automotive"
+            android:resource="@xml/automotive_app_desc" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <!-- Settings, opened from the media center. Media apps have no launcher entry; activities other than the
+             media center's are only allowed for settings and sign-in, and only while parked, so neither is
+             distraction-optimized.
+             singleTask + configChanges (multi-display head units): moving between driver and passenger display moves the
+             one instance and keeps its state instead of starting a duplicate; Compose adapts to the new size. -->
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|density"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:label="@string/settings_title"
+            android:theme="@style/Theme.Harlow">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- Deep link harlow://settings -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="harlow" android:host="settings" />
+            </intent-filter>
+        </activity>
+
+        <!-- Sign-in, opened by the media center's "Sign in" button (the service's error resolution intent), by
+             "Add account" in the system's account settings, from settings and by the harlow://signin deep link.
+             singleTask + configChanges as for settings; a further request arrives in onNewIntent. -->
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|density"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:label="@string/sign_in_title"
+            android:theme="@style/Theme.Harlow"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Deep link harlow://signin -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="harlow" android:host="signin" />
+            </intent-filter>
+        </activity>
+
+        <!-- Deep links for browsing and playback (DL-2): a trampoline without UI that opens the media center -->
+        <activity
+            android:name=".DeepLinkActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="harlow" />
+                <data android:host="browse" />
+                <data android:host="play" />
+                <data android:host="search" />
+                <data android:host="open" />
+            </intent-filter>
+        </activity>
+
+        <!-- The signed-in Jellyfin user in the system's account settings -->
+        <service
+            android:name=".account.AuthenticatorService"
+            android:exported="true"
+            android:permission="android.permission.ACCOUNT_MANAGER">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- HarlowMediaService — the media center (and voice search via the session) talks to it.
+             Exported without a permission (ExportedService) on purpose: AAOS media apps must offer an exported
+             MediaBrowserService, and its callers (the car's media center, voice assistant, steering-wheel keys, Bluetooth)
+             are other apps that can't hold a permission of Harlow's. The session's onConnect accepts every
+             controller. -->
+        <service
+            android:name="dev.harlow.core.player.HarlowMediaService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="Instantiatable,ExportedService">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <!-- Media buttons: MediaButtonReceiver is declared in core/player's manifest -->
+
+        <!-- ArtworkProvider — content:// URIs for the media center and the MediaSession.
+             Exported without a permission (ExportedContentProvider) on purpose: the media center, notification and
+             other system surfaces load the artwork from their own processes and hold no permission of Harlow's. The
+             provider only reads: query/insert/update/delete do nothing, openFile hands out read-only images, and it
+             fetches only IDs of the signed-in library (ArtworkPreCacher.resolveArtwork), never paths or other servers. -->
+        <provider
+            android:name="dev.harlow.core.player.ArtworkProvider"
+            android:authorities="${applicationId}.artwork"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            tools:ignore="ExportedContentProvider" />
+
+    </application>
+
+</manifest>

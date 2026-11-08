@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Phosphor Icons (MIT): the icon of ic_aa_artists with a HeartFill badge, the media center's "favorite artist" custom action (a favorite). -->
+<!-- The base icon nearly full size like Media3's icons, cut free where the heart sits so the outlined heart stays
+     readable at mdpi. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <group>
+        <clip-path android:pathData="M0,0H256V124H120V256H0Z" />
+        <group
+            android:pivotX="128"
+            android:pivotY="128"
+            android:scaleX="0.92"
+            android:scaleY="0.92">
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M230.93,220a8,8,0,0,1-6.93,4H32a8,8,0,0,1-6.92-12c15.23-26.33,38.7-45.21,66.09-54.16a72,72,0,1,1,73.66,0c27.39,8.95,50.86,27.83,66.09,54.16A8,8,0,0,1,230.93,220Z" />
+        </group>
+    </group>
+    <group
+        android:translateX="122"
+        android:translateY="112"
+        android:scaleX="0.54"
+        android:scaleY="0.54">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M240,102c0,70-103.79,126.66-108.21,129a8,8,0,0,1-7.58,0C119.79,228.66,16,172,16,102A62.07,62.07,0,0,1,78,40c20.65,0,38.73,8.88,50,23.89C139.27,48.88,157.35,40,178,40A62.07,62.07,0,0,1,240,102Z" />
+    </group>
+</vector>

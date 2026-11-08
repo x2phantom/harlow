@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in_error_untrusted_certificate">The server\'s certificate isn\'t trusted. Use a certificate from a public certificate authority, e.g. Let\'s Encrypt.</string>
+    <string name="sign_in_error_insecure_address">Harlow only connects over HTTPS. Use your server\'s https:// address.</string>
+    <string name="sign_in_error_invalid_address">Enter your server\'s https:// address.</string>
+    <string name="sign_in_error_generic">Sign-in failed. Check the server address, username and password.</string>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="playback_error_server_unreachable">Can\'t reach your Jellyfin server. Without it, Harlow only plays tracks that are stored completely.</string>
+    <string name="playback_error_offline_not_cached">Can\'t reach your Jellyfin server, and these tracks aren\'t stored completely.</string>
+    <string name="offline_hint_title">Server unreachable</string>
+    <string name="offline_hint_subtitle">Offline, Harlow only plays tracks that are stored completely – there are none here.</string>
+    <string name="playback_error_track_removed">This track is no longer on your Jellyfin server.</string>
+    <string name="playback_error_signed_out">Harlow is no longer signed in to Jellyfin. Sign in again to keep listening.</string>
+    <string name="playback_error_generic">Harlow couldn\'t play this track.</string>
+    <string name="playback_error_nothing_playable">Harlow couldn\'t find anything to play for this selection.</string>
+    <string name="sign_in_required">Sign in to your Jellyfin server to browse and play your music.</string>
+    <string name="sign_in_action">Sign in</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_library">Library</string>
+    <string name="tab_playlists">Playlists</string>
+    <string name="tab_favorites">Favorites</string>
+    <string name="folder_albums">Albums</string>
+    <string name="folder_artists">Artists</string>
+    <string name="folder_genres">Genres</string>
+    <string name="folder_songs">Songs</string>
+    <string name="folder_tracks">Tracks</string>
+    <string name="group_recently_played">Recently Played</string>
+    <string name="group_recently_added">Recently Added</string>
+    <string name="group_quick_picks">Quick Picks</string>
+    <string name="group_favorite_tracks">Favorite Tracks</string>
+    <string name="subtitle_album">Album</string>
+    <string name="subtitle_album_by">Album • %1$s</string>
+    <string name="subtitle_artist">Artist</string>
+    <string name="subtitle_playlist">Playlist</string>
+    <plurals name="subtitle_playlist_tracks">
+        <item quantity="one">Playlist • %d track</item>
+        <item quantity="other">Playlist • %d tracks</item>
+    </plurals>
+    <string name="action_add_favorite">Add to favorites</string>
+    <string name="action_remove_favorite">Remove from favorites</string>
+    <string name="action_add_album_favorite">Add album to favorites</string>
+    <string name="action_remove_album_favorite">Remove album from favorites</string>
+    <string name="action_add_artist_favorite">Add artist to favorites</string>
+    <string name="action_remove_artist_favorite">Remove artist from favorites</string>
+    <string name="action_shuffle_on">Shuffle on</string>
+    <string name="action_shuffle_off">Shuffle off</string>
+    <string name="action_repeat_off">Repeat off</string>
+    <string name="action_repeat_all">Repeat all</string>
+    <string name="action_repeat_one">Repeat one</string>
+    <string name="favorite_error_offline">Can\'t reach your Jellyfin server, so the favorite wasn\'t changed.</string>
+    <string name="playback_error_audio_focus_denied">Can\'t play right now: another audio source has priority.</string>
+</resources>

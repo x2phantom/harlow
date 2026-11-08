@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <!-- Playback errors shown by system surfaces (Android Auto, notification, lock screen) -->
+    <string name="playback_error_server_unreachable">Dein Jellyfin-Server ist nicht erreichbar. Ohne ihn spielt Harlow nur Titel, die vollständig gespeichert sind.</string>
+    <string name="playback_error_offline_not_cached">Dein Jellyfin-Server ist nicht erreichbar, und diese Titel sind nicht vollständig gespeichert.</string>
+    <string name="offline_hint_title">Server nicht erreichbar</string>
+    <string name="offline_hint_subtitle">Offline spielt Harlow nur Titel, die vollständig gespeichert sind – hier ist keiner dabei.</string>
+    <string name="playback_error_track_removed">Dieser Titel ist nicht mehr auf deinem Jellyfin-Server.</string>
+    <string name="playback_error_signed_out">Harlow ist nicht mehr bei Jellyfin angemeldet. Melde dich erneut an, um weiterzuhören.</string>
+    <string name="playback_error_generic">Harlow konnte diesen Titel nicht abspielen.</string>
+    <string name="playback_error_nothing_playable">Harlow hat für diese Auswahl nichts zum Abspielen gefunden.</string>
+    <!-- Shown by the car's media center while no Jellyfin server is signed in -->
+    <string name="sign_in_required">Melde dich bei deinem Jellyfin-Server an, um deine Musik zu durchsuchen und abzuspielen.</string>
+    <string name="sign_in_action">Anmelden</string>
+    <!-- Root tabs of the media center -->
+    <string name="tab_home">Start</string>
+    <string name="tab_library">Bibliothek</string>
+    <string name="tab_playlists">Playlists</string>
+    <string name="tab_favorites">Favoriten</string>
+    <!-- Folders inside the tabs -->
+    <string name="folder_albums">Alben</string>
+    <string name="folder_artists">Künstler</string>
+    <string name="folder_genres">Genres</string>
+    <string name="folder_songs">Titel</string>
+    <string name="folder_tracks">Titel</string>
+    <!-- Group titles on the home tab -->
+    <string name="group_recently_played">Zuletzt gespielt</string>
+    <string name="group_recently_added">Neu hinzugefügt</string>
+    <string name="group_quick_picks">Schnellauswahl</string>
+    <string name="group_favorite_tracks">Lieblingstitel</string>
+    <!-- Subtitles of list items -->
+    <string name="subtitle_album">Album</string>
+    <string name="subtitle_album_by">Album • %1$s</string>
+    <string name="subtitle_artist">Künstler</string>
+    <string name="subtitle_playlist">Playlist</string>
+    <plurals name="subtitle_playlist_tracks">
+        <item quantity="one">Playlist • %d Titel</item>
+        <item quantity="other">Playlist • %d Titel</item>
+    </plurals>
+    <!-- Custom actions next to the media center's play controls -->
+    <string name="action_add_favorite">Zu Favoriten hinzufügen</string>
+    <string name="action_remove_favorite">Aus Favoriten entfernen</string>
+    <string name="action_add_album_favorite">Album zu Favoriten hinzufügen</string>
+    <string name="action_remove_album_favorite">Album aus Favoriten entfernen</string>
+    <string name="action_add_artist_favorite">Künstler zu Favoriten hinzufügen</string>
+    <string name="action_remove_artist_favorite">Künstler aus Favoriten entfernen</string>
+    <string name="action_shuffle_on">Zufallswiedergabe an</string>
+    <string name="action_shuffle_off">Zufallswiedergabe aus</string>
+    <string name="action_repeat_off">Wiederholen aus</string>
+    <string name="action_repeat_all">Alle wiederholen</string>
+    <string name="action_repeat_one">Titel wiederholen</string>
+    <string name="favorite_error_offline">Dein Jellyfin-Server ist nicht erreichbar, der Favorit wurde daher nicht geändert.</string>
+    <string name="playback_error_audio_focus_denied">Wiedergabe gerade nicht möglich: Eine andere Audioquelle hat Vorrang.</string>
+</resources>

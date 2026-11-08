@@ -1,0 +1,81 @@
+# Private documents
+harman/
+
+# Jellyfin Credentials
+jellyfin-credentials
+
+# Test-Music
+App-Cert-Testbibliothek
+
+# Gradle
+.gradle/
+build/
+!**/build.gradle
+!**/settings.gradle
+!**/settings.gradle.kts
+!**/gradle/
+!**/gradle.properties
+!**/gradlew
+
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+.androidstudio
+
+# Android/build output
+app/build/
+core/*/build/
+feature/*/build/
+sync/build/
+
+# Android/release output
+app/release/
+app/binaries/
+
+# KtLint
+.ktlintignore
+
+# Keystore
+*.jks
+*.keystore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local configuration
+local.properties
+!local.properties.template
+
+# Build reports
+build/reports/
+*/build/reports/
+
+# Environment
+*.env
+.env.*
+
+# Mock server
+mockserver/
+
+# Profile snapshots
+*.hprof
+profiling/
+
+# Android Logging
+*.log
+
+# Gradle properties (optional secrets)
+# gradle.properties  # uncomment if you store secrets here
+
+# Ansible
+deploy/inventory.ini
+
+# dev-scripts/measure-performance.sh output
+perf-*.csv
+perf-summary.txt
+
+# Screenshot test output (ScreenshotCapture)
+.marathon-snapshots/

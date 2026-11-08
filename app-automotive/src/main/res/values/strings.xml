@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <string name="app_name" translatable="false">Harlow</string>
+    <string name="settings_title">Harlow-Einstellungen</string>
+    <string name="sign_in_title">Bei Jellyfin anmelden</string>
+    <!-- The account in the system's account settings -->
+    <string name="account_label" translatable="false">Jellyfin (Harlow)</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- MediaCenterLauncher asks whether the media center supports MEDIA_TEMPLATE_V2 (deep links to an item or a search).
+         From Android 11 on, other apps are visible only through <queries> or after they interacted with Harlow (the
+         media center binding the service); without this, a deep link before that first binding falls back to V1. -->
+    <queries>
+        <intent>
+            <action android:name="androidx.car.app.mediaextensions.action.MEDIA_TEMPLATE_V2" />
+        </intent>
+    </queries>
+
+    <application>
+        <!-- Media buttons (steering wheel, Bluetooth) for HarlowMediaService; declared here, next to Media3 -->
+        <receiver
+            android:name="androidx.media3.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

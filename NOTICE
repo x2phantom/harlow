@@ -1,0 +1,25 @@
+Harlow
+Copyright 2026 Anton Dietrich
+Source code: https://github.com/x2phantom/harlow
+The source of each release is tagged with the version shown in the app's settings.
+
+Harlow is a modified version of Mellow:
+  Mellow, Copyright 2026 Anton Malinski
+  https://github.com/Malinskiy/mellow
+  Licensed under the Apache License, Version 2.0
+
+Changes: since 2026, Anton Dietrich has modified the files of Mellow. The project was renamed, the phone and
+Android Auto app was removed, and the app was rebuilt as a media app for Android Automotive OS.
+Harlow is not affiliated with or endorsed by the authors of Mellow.
+
+Third-party software with source-availability terms:
+
+  Jellyfin SDK for Kotlin 1.8.7, GNU Lesser General Public License v3.0
+  Source: https://github.com/jellyfin/jellyfin-sdk-kotlin
+  Harlow uses this library without changes. To use a modified version, see "Replacing the Jellyfin SDK" in the
+  README of Harlow's source code.
+
+  desugar_jdk_libs 2.1.5, GNU General Public License v2.0 with the Classpath Exception
+  Source: https://github.com/google/desugar_jdk_libs
+
+The licenses of all libraries are listed in the app under Settings > Open-source licenses.

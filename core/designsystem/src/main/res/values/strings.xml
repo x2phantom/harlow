@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="login_close">Schließen</string>
+    <string name="login_subtitle">Mit deinem Jellyfin-Server verbinden</string>
+    <string name="login_server_address">Serveradresse</string>
+    <string name="login_server_address_hint">Nur HTTPS; https:// wird ergänzt, wenn du es weglässt</string>
+    <string name="login_username">Benutzername</string>
+    <string name="login_password">Passwort</string>
+    <string name="login_sign_in">Anmelden</string>
+</resources>

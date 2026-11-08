@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sync_phase_home">home</string>
+    <string name="sync_phase_favorites">favorites</string>
+    <string name="sync_phase_albums">albums</string>
+    <string name="sync_phase_artists">artists</string>
+    <string name="sync_phase_tracks">tracks</string>
+    <string name="sync_phase_playlists">playlists</string>
+    <string name="sync_phase_artwork">artwork</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <!-- What a library sync or cleanup is working on, inserted into the progress texts -->
+    <string name="sync_phase_home">Startseite</string>
+    <string name="sync_phase_favorites">Favoriten</string>
+    <string name="sync_phase_albums">Alben</string>
+    <string name="sync_phase_artists">Künstler</string>
+    <string name="sync_phase_tracks">Titel</string>
+    <string name="sync_phase_playlists">Playlists</string>
+    <string name="sync_phase_artwork">Cover</string>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <string name="back">Zurück</string>
+    <string name="settings_screen_title">Einstellungen</string>
+    <string name="settings_section_server">Server</string>
+    <string name="settings_section_playback">Wiedergabe</string>
+    <string name="settings_section_library">Bibliothek</string>
+    <string name="settings_section_about">Über</string>
+    <string name="settings_section_account">Konto</string>
+    <string name="settings_stream_quality">Streaming-Qualität</string>
+    <string name="settings_stream_quality_original">Original (keine Umwandlung)</string>
+    <string name="settings_stream_quality_original_note">Verlustfrei (z. B. FLAC): drei- bis viermal so viel mobile Daten und Speicher im Auto wie 320 kbps</string>
+    <string name="settings_stream_quality_kbps">%1$d kbps</string>
+    <string name="settings_auto_resume">Automatisch fortsetzen</string>
+    <string name="settings_auto_resume_summary">Spielt beim Öffnen weiter, wenn beim Abstellen des Autos Musik lief</string>
+    <string name="settings_list_view">Listenansicht</string>
+    <string name="settings_list_view_summary">Alben, Künstler und Titel als Liste mit kleinem Cover statt als Cover-Raster</string>
+    <string name="settings_sync_now">Jetzt synchronisieren</string>
+    <string name="settings_auto_sync">Automatisch synchronisieren</string>
+    <string name="settings_auto_sync_manual">Nur manuell</string>
+    <plurals name="settings_auto_sync_interval">
+        <item quantity="one">Jede Stunde</item>
+        <item quantity="other">Alle %d Stunden</item>
+    </plurals>
+    <string name="settings_work_offline">Offline arbeiten</string>
+    <string name="settings_work_offline_summary">Nicht mit dem Server verbinden; nur abspielen, was offline verfügbar ist</string>
+    <string name="settings_clean_up">Bibliothek bereinigen</string>
+    <string name="settings_clean_up_summary">Entfernt Einträge, die auf dem Server gelöscht wurden</string>
+    <string name="settings_cleaning_up">Wird bereinigt…</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_sign_out">Abmelden</string>
+    <string name="settings_sign_out_description">Harlow meldet sich von diesem Server ab und löscht deine Bibliothek, Cover und Warteschlange aus dem Auto. Melde dich im Media-Center wieder an.</string>
+    <string name="settings_connection_offline_by_choice">Offline (selbst gewählt)</string>
+    <string name="settings_connection_connected">Verbunden</string>
+    <string name="settings_connection_server_unreachable">Server nicht erreichbar</string>
+    <string name="settings_connection_no_network">Kein Netzwerk</string>
+    <string name="settings_syncing_progress">Synchronisiere %1$s… %2$d/%3$d</string>
+    <string name="settings_syncing">Wird synchronisiert…</string>
+    <string name="settings_sync_needs_connection">Benötigt eine Verbindung zum Server</string>
+    <string name="settings_not_synced">Noch nicht synchronisiert</string>
+    <string name="settings_synced_just_now">Gerade eben synchronisiert</string>
+    <string name="settings_synced_at">Zuletzt synchronisiert: %1$s</string>
+    <string name="licenses_title">Open-Source-Lizenzen</string>
+    <string name="licenses_section_platform">Plattform</string>
+    <string name="licenses_close">Schließen</string>
+    <string name="licenses_none">Keine Lizenzinformationen.</string>
+</resources>

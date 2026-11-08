@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sync_channel_name">Library Sync</string>
+    <string name="sync_notification_title">Syncing library</string>
+    <string name="sync_notification_text">Syncing library…</string>
+    <string name="sync_progress">Syncing %1$s…</string>
+    <string name="sync_progress_counted">Syncing %1$s… %2$d/%3$d</string>
+    <string name="cleanup_channel_name">Library Cleanup</string>
+    <string name="cleanup_notification_title">Cleaning up library</string>
+    <string name="cleanup_notification_text">Cleaning up library…</string>
+    <string name="cleanup_progress">Cleaning up %1$s…</string>
+    <string name="cleanup_progress_counted">Cleaning up %1$s… %2$d/%3$d</string>
+</resources>

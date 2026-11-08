@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <!-- Android account type of the signed-in Jellyfin user; also referenced by the app's authenticator.xml -->
+    <string name="account_type" translatable="false">eu.hwld.harlow.jellyfin</string>
+    <string name="sign_in_error_untrusted_certificate">Dem Zertifikat des Servers wird nicht vertraut. Verwende ein Zertifikat einer öffentlichen Zertifizierungsstelle, z. B. Let\'s Encrypt.</string>
+    <string name="sign_in_error_insecure_address">Harlow verbindet sich nur über HTTPS. Verwende die https://-Adresse deines Servers.</string>
+    <string name="sign_in_error_invalid_address">Gib die https://-Adresse deines Servers ein.</string>
+    <string name="sign_in_error_generic">Anmeldung fehlgeschlagen. Prüfe Serveradresse, Benutzername und Passwort.</string>
+</resources>

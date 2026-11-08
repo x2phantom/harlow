@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+    <string name="sync_channel_name">Bibliothek synchronisieren</string>
+    <string name="sync_notification_title">Bibliothek wird synchronisiert</string>
+    <string name="sync_notification_text">Bibliothek wird synchronisiert…</string>
+    <string name="sync_progress">Synchronisiere %1$s…</string>
+    <string name="sync_progress_counted">Synchronisiere %1$s… %2$d/%3$d</string>
+    <string name="cleanup_channel_name">Bibliothek bereinigen</string>
+    <string name="cleanup_notification_title">Bibliothek wird bereinigt</string>
+    <string name="cleanup_notification_text">Bibliothek wird bereinigt…</string>
+    <string name="cleanup_progress">Bereinige %1$s…</string>
+    <string name="cleanup_progress_counted">Bereinige %1$s… %2$d/%3$d</string>
+</resources>

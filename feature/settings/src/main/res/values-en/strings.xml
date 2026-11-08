@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back">Back</string>
+    <string name="settings_screen_title">Settings</string>
+    <string name="settings_section_server">Server</string>
+    <string name="settings_section_playback">Playback</string>
+    <string name="settings_section_library">Library</string>
+    <string name="settings_section_about">About</string>
+    <string name="settings_section_account">Account</string>
+    <string name="settings_stream_quality">Streaming quality</string>
+    <string name="settings_stream_quality_original">Original (no conversion)</string>
+    <string name="settings_stream_quality_original_note">Lossless (e.g. FLAC): three to four times the mobile data and storage in the car of 320 kbps</string>
+    <string name="settings_stream_quality_kbps">%1$d kbps</string>
+    <string name="settings_auto_resume">Resume automatically</string>
+    <string name="settings_auto_resume_summary">Plays on when opened if music was playing when the car was turned off</string>
+    <string name="settings_list_view">List view</string>
+    <string name="settings_list_view_summary">Albums, artists and songs as a list with small covers instead of a cover grid</string>
+    <string name="settings_sync_now">Sync now</string>
+    <string name="settings_auto_sync">Auto-sync</string>
+    <string name="settings_auto_sync_manual">Manual only</string>
+    <plurals name="settings_auto_sync_interval">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <string name="settings_work_offline">Work offline</string>
+    <string name="settings_work_offline_summary">Don\'t connect to the server; play only what\'s available offline</string>
+    <string name="settings_clean_up">Clean up library</string>
+    <string name="settings_clean_up_summary">Remove items that were deleted on the server</string>
+    <string name="settings_cleaning_up">Cleaning up…</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_sign_out">Sign out</string>
+    <string name="settings_sign_out_description">Harlow signs out of this server and deletes your library, covers and queue from the car. Sign in again from the media center.</string>
+    <string name="settings_connection_offline_by_choice">Offline (by choice)</string>
+    <string name="settings_connection_connected">Connected</string>
+    <string name="settings_connection_server_unreachable">Server not reachable</string>
+    <string name="settings_connection_no_network">No network</string>
+    <string name="settings_syncing_progress">Syncing %1$s… %2$d/%3$d</string>
+    <string name="settings_syncing">Syncing…</string>
+    <string name="settings_sync_needs_connection">Needs a connection to the server</string>
+    <string name="settings_not_synced">Not synced yet</string>
+    <string name="settings_synced_just_now">Last synced just now</string>
+    <string name="settings_synced_at">Last synced %1$s</string>
+    <string name="licenses_title">Open-source licenses</string>
+    <string name="licenses_section_platform">Platform</string>
+    <string name="licenses_close">Close</string>
+    <string name="licenses_none">No license information.</string>
+</resources>

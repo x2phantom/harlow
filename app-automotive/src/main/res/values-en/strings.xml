@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Harlow settings</string>
+    <string name="sign_in_title">Sign in to Jellyfin</string>
+</resources>
