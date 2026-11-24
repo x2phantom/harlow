@@ -132,7 +132,7 @@ MediaLibraryService exposes a browsable content tree; the root's children are th
   rendered placeholder when an item has no artwork or it can't be fetched.
 - Offline, only what plays without the server is listed: downloads and tracks whose stream lies completely in the
   streaming cache (`CachedTracks`: the HLS playlist and all its segments, or the whole original file). The queue is cut
-  to those tracks; a list with none of them shows one item that says why ("Server nicht erreichbar"; the media center
+  to those tracks; a list with none of them shows one item that says why ("Offline"; the media center
   leaves out items that are neither browsable nor playable, so it is playable and fails with the explanation). The
   service re-notifies the tree when the connection state changes.
 - Search (`onSearch`/`onGetSearchResult`) and voice "play X by Y" (Media3 hands `onPlayFromSearch` to
@@ -159,7 +159,9 @@ The default is 320 kbps (`StreamQuality.DEFAULT`); "Original" (e.g. FLAC) stays 
 storage use. Media3 SimpleCache (LRU, 4 GB) caches streamed audio. There is no download code: the media center can't
 start downloads, so it was removed (an unused foreground service). The `downloads` table,
 the read-only download cache remain for when downloads come back. Offline, tracks that were streamed
-completely play from the streaming cache (`CachedTracks`).
+completely play from the streaming cache (`CachedTracks`). As the player buffers less than a minute ahead, a track left
+after at least 5 s gets the rest of its stream cached in the background (`HeardTracks`, `TrackCacheCompleter`), so what
+was listened to is there offline too.
 
 ### 6. Authentication
 

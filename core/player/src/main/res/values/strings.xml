@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
     <!-- Playback errors shown by system surfaces (Android Auto, notification, lock screen) -->
-    <string name="playback_error_server_unreachable">Dein Jellyfin-Server ist nicht erreichbar. Ohne ihn spielt Harlow nur Titel, die vollständig gespeichert sind.</string>
-    <string name="playback_error_offline_not_cached">Dein Jellyfin-Server ist nicht erreichbar, und diese Titel sind nicht vollständig gespeichert.</string>
-    <string name="offline_hint_title">Server nicht erreichbar</string>
-    <string name="offline_hint_subtitle">Offline spielt Harlow nur Titel, die vollständig gespeichert sind – hier ist keiner dabei.</string>
+    <string name="playback_error_server_unreachable">Server nicht erreichbar. Nur gespeicherte Titel spielbar.</string>
+    <string name="playback_error_offline_not_cached">Offline: Titel nicht gespeichert.</string>
+    <string name="offline_hint_title">Offline</string>
+    <string name="offline_hint_subtitle">Hier ist kein Titel gespeichert.</string>
     <string name="playback_error_track_removed">Dieser Titel ist nicht mehr auf deinem Jellyfin-Server.</string>
     <string name="playback_error_signed_out">Harlow ist nicht mehr bei Jellyfin angemeldet. Melde dich erneut an, um weiterzuhören.</string>
     <string name="playback_error_generic">Harlow konnte diesen Titel nicht abspielen.</string>
@@ -49,6 +49,6 @@
     <string name="action_repeat_off">Wiederholen aus</string>
     <string name="action_repeat_all">Alle wiederholen</string>
     <string name="action_repeat_one">Titel wiederholen</string>
-    <string name="favorite_error_offline">Dein Jellyfin-Server ist nicht erreichbar, der Favorit wurde daher nicht geändert.</string>
+    <string name="favorite_error_offline">Offline: Favorit nicht geändert.</string>
     <string name="playback_error_audio_focus_denied">Wiedergabe gerade nicht möglich: Eine andere Audioquelle hat Vorrang.</string>
 </resources>

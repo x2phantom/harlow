@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="playback_error_server_unreachable">Can\'t reach your Jellyfin server. Without it, Harlow only plays tracks that are stored completely.</string>
-    <string name="playback_error_offline_not_cached">Can\'t reach your Jellyfin server, and these tracks aren\'t stored completely.</string>
-    <string name="offline_hint_title">Server unreachable</string>
-    <string name="offline_hint_subtitle">Offline, Harlow only plays tracks that are stored completely – there are none here.</string>
+    <string name="playback_error_server_unreachable">Server unreachable. Only stored tracks play.</string>
+    <string name="playback_error_offline_not_cached">Offline: tracks not stored.</string>
+    <string name="offline_hint_title">Offline</string>
+    <string name="offline_hint_subtitle">No tracks stored here.</string>
     <string name="playback_error_track_removed">This track is no longer on your Jellyfin server.</string>
     <string name="playback_error_signed_out">Harlow is no longer signed in to Jellyfin. Sign in again to keep listening.</string>
     <string name="playback_error_generic">Harlow couldn\'t play this track.</string>
@@ -42,6 +42,6 @@
     <string name="action_repeat_off">Repeat off</string>
     <string name="action_repeat_all">Repeat all</string>
     <string name="action_repeat_one">Repeat one</string>
-    <string name="favorite_error_offline">Can\'t reach your Jellyfin server, so the favorite wasn\'t changed.</string>
+    <string name="favorite_error_offline">Offline: favorite not changed.</string>
     <string name="playback_error_audio_focus_denied">Can\'t play right now: another audio source has priority.</string>
 </resources>

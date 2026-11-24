@@ -67,6 +67,7 @@ import dev.harlow.core.player.cache.HarlowCache
 import dev.harlow.core.player.cache.HarlowDataSourceFactory
 import dev.harlow.core.player.cache.PlayerSignOutCleanup
 import dev.harlow.core.player.cache.StreamSource
+import dev.harlow.core.player.cache.TrackCacheCompleter
 import dev.harlow.core.player.cache.streamSource
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -117,6 +118,7 @@ class HarlowMediaService : MediaLibraryService() {
     @Inject lateinit var playerSignOutCleanup: PlayerSignOutCleanup
 
     private var mediaLibrarySession: MediaLibrarySession? = null
+    private var sessionNotices: SessionNotices? = null
     private var player: ExoPlayer? = null
     private var playbackReporting: PlaybackReporting? = null
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -210,6 +212,7 @@ class HarlowMediaService : MediaLibraryService() {
         })
 
         exoPlayer.addListener(queuePersistenceListener)
+        exoPlayer.addListener(HeardTracks(::completeInCache))
         exoPlayer.addListener(mediaButtonsListener)
         exoPlayer.addListener(ReleaseFocusAtEnd(exoPlayer, Handler(exoPlayer.applicationLooper)))
         exoPlayer.addListener(
@@ -231,6 +234,7 @@ class HarlowMediaService : MediaLibraryService() {
             .setLibraryErrorReplicationMode(MediaLibrarySession.LIBRARY_ERROR_REPLICATION_MODE_FATAL)
             .setMediaButtonPreferences(mediaButtons(exoPlayer))
             .build()
+            .also { sessionNotices = SessionNotices(it, handler) }
 
         Log.d(TAG, "MediaLibrarySession created")
 
@@ -335,6 +339,7 @@ class HarlowMediaService : MediaLibraryService() {
             stop()
             clearMediaItems()
         }
+        trackCacheCompleter.cancelAll()
         if (serverId == null) clearStreamingCacheWhenSettled()
         if (serverId != null) session.clearReplicatedLibraryError()
         notifyLibraryChanged()
@@ -462,12 +467,12 @@ class HarlowMediaService : MediaLibraryService() {
     }
 
     /**
-     * Tells the controllers why an action failed, as a non-fatal session error. Of the media centers seen so far, the
-     * AOSP one of Android 13 ignores it and that of Android 15 shows it as a toast only until Media3 clears the error a
-     * moment later; a toast of the app's own isn't shown for a background app. Main thread.
+     * Tells the controllers why an action failed, as a non-fatal session error ([SessionNotices]). Of the media
+     * centers seen so far, the AOSP one of Android 13 ignores it and that of Android 15 shows it as a toast; a toast of
+     * the app's own isn't shown for a background app. Main thread.
      */
     private fun showNotice(errorCode: Int, @StringRes message: Int) {
-        mediaLibrarySession?.sendError(SessionError(errorCode, getString(message)))
+        sessionNotices?.show(SessionError(errorCode, getString(message)))
     }
 
     /**
@@ -490,7 +495,7 @@ class HarlowMediaService : MediaLibraryService() {
     /**
      * Favorites or unfavorites the current track, its album or its artist: in Room right away, so the button and the
      * Favorites tab follow, then on the server. If the server can't be reached the change is undone, as the next sync
-     * would revert it.
+     * would revert it; offline it isn't tried at all.
      */
     private suspend fun toggleFavorite(target: MediaCenterActions.FavoriteTarget): SessionResult {
         val trackId = currentTrackId.value ?: return SessionResult(SessionError.ERROR_BAD_VALUE)
@@ -500,6 +505,12 @@ class HarlowMediaService : MediaLibraryService() {
             MediaCenterActions.FavoriteTarget.ARTIST -> trackDao.getTrackById(trackId)?.favoriteArtistId
         } ?: return SessionResult(SessionError.ERROR_BAD_VALUE)
         val wasFavorite = isFavoriteInRoom(target, itemId) ?: return SessionResult(SessionError.ERROR_BAD_VALUE)
+        if (!isOnline()) {
+            // Without touching Room: changing and reverting it re-loads the favorite lists, and Media3 clears the
+            // notice on a successful load, so the media center's toast vanished at once.
+            withContext(Dispatchers.Main) { showNotice(SessionError.ERROR_IO, R.string.favorite_error_offline) }
+            return SessionResult(SessionError.ERROR_IO)
+        }
         setFavoriteInRoom(target, itemId, !wasFavorite)
         notifyFavoritesChanged()
         val result = userRepository.setFavorite(itemId, !wasFavorite)
@@ -666,6 +677,8 @@ class HarlowMediaService : MediaLibraryService() {
         playbackReporting?.release()
         playbackReporting = null
         serviceScope.cancel()
+        sessionNotices?.clear()
+        sessionNotices = null
         mediaLibrarySession?.run {
             player.release()
             release()
@@ -700,7 +713,7 @@ class HarlowMediaService : MediaLibraryService() {
                 R.string.playback_error_nothing_playable
             }
             val error = SessionError(SessionError.ERROR_NOT_SUPPORTED, getString(message))
-            mediaLibrarySession?.let { session -> handler.post { session.sendError(controller, error) } }
+            handler.post { sessionNotices?.show(error, controller) }
             throw UnsupportedOperationException("Nothing playable")
         }
         if (playable.size < items.size) {
@@ -720,6 +733,24 @@ class HarlowMediaService : MediaLibraryService() {
     )
 
     private val cachedTracks by lazy { CachedTracks(harlowCache.streamingCache) }
+
+    private val trackCacheCompleter by lazy {
+        TrackCacheCompleter(harlowCache.streamingCache, dataSourceFactory.createNetworkDataSourceFactory())
+    }
+
+    /**
+     * A track listened to and left before its end ([HeardTracks]) gets the rest of its stream cached, so it is offered
+     * offline as well. Not for downloads (they play from the download cache) and not without the server.
+     */
+    private fun completeInCache(item: MediaItem) {
+        val config = item.localConfiguration ?: return
+        if (networkStateObserver.connectionState.value != ConnectionState.Connected) return
+        val source = StreamSource(config.uri, config.customCacheKey, config.mimeType == MimeTypes.APPLICATION_M3U8)
+        serviceScope.launch {
+            if (item.mediaId in downloadDao.getDownloadedTrackIds()) return@launch
+            trackCacheCompleter.complete(serviceScope, source)
+        }
+    }
 
     @Volatile private var offlineLibraryMemo: Pair<List<Any?>, OfflineLibrary>? = null
 
@@ -1445,6 +1476,8 @@ class HarlowMediaService : MediaLibraryService() {
                 val dlAlbumIds = offline?.albumIds
                 val dlArtistNames = offline?.artistNames
 
+                val isAvailableAlbum = dlAlbumIds?.let { ids -> { album: AlbumEntity -> album.id in ids } }
+
                 fun List<TrackEntity>.onlineFilter() =
                     if (dlTrackIds != null) filter { it.id in dlTrackIds } else this
                 fun List<AlbumEntity>.onlineFilter() =
@@ -1454,21 +1487,24 @@ class HarlowMediaService : MediaLibraryService() {
 
                 val items = when {
                     parentId == TAB_HOME -> {
-                        val recentAlbums = albumDao.getRecentlyPlayedAlbumsSync(serverId, limit = HOME_ROW_SIZE)
-                            .onlineFilter()
+                        val recentAlbums = availableFirst(HOME_ROW_SIZE, isAvailableAlbum) { limit ->
+                            albumDao.getRecentlyPlayedAlbumsSync(serverId, limit)
+                        }
                         val recentItems = recentAlbums
                             .map { it.toBrowsableItem(groupTitle = getString(R.string.group_recently_played)) }
 
-                        val addedAlbums = albumDao.getRecentlyAddedAlbums(serverId, limit = HOME_ROW_SIZE)
-                            .onlineFilter()
+                        val addedAlbums = availableFirst(HOME_ROW_SIZE, isAvailableAlbum) { limit ->
+                            albumDao.getRecentlyAddedAlbums(serverId, limit)
+                        }
                         val addedItems = addedAlbums
                             .map { it.toBrowsableItem(groupTitle = getString(R.string.group_recently_added)) }
 
                         val usedIds = recentAlbums.map { it.id }.toSet() +
                             addedAlbums.map { it.id }.toSet()
 
-                        val mostPlayed = albumDao.getMostPlayedAlbumsSync(serverId, limit = 20)
-                            .onlineFilter()
+                        val mostPlayed = availableFirst(MOST_PLAYED_POOL, isAvailableAlbum) { limit ->
+                            albumDao.getMostPlayedAlbumsSync(serverId, limit)
+                        }
                         val favoriteAlbums = albumDao.getFavoriteAlbumsSync(serverId)
                             .onlineFilter()
                         val quickPicks = (mostPlayed + favoriteAlbums)
@@ -1570,12 +1606,10 @@ class HarlowMediaService : MediaLibraryService() {
                             }
                     }
                     parentId == LIBRARY_SONGS -> {
-                        val allTracks = trackDao.getTracksByServerPaged(serverId, limit = AA_MAX_ITEMS, offset = 0)
-                        val filtered = allTracks.onlineFilter()
-                        Log.d(TAG, "LIBRARY_SONGS: serverId=$serverId, isOnline=$isOnline, " +
-                            "total=${allTracks.size}, afterFilter=${filtered.size}, " +
+                        val songs = trackDao.librarySongs(serverId, available = dlTrackIds, limit = AA_MAX_ITEMS)
+                        Log.d(TAG, "LIBRARY_SONGS: isOnline=$isOnline, shown=${songs.size}, " +
                             "dlTrackIds=${dlTrackIds?.size}")
-                        filtered.map { it.toPlayableItem() }
+                        songs.map { it.toPlayableItem() }
                     }
                     parentId == TAB_PLAYLISTS -> {
                         playlistDao.getPlaylistsByServer(serverId)
@@ -1642,13 +1676,19 @@ class HarlowMediaService : MediaLibraryService() {
                 val dlTrackIds = offline?.trackIds
                 val dlAlbumIds = offline?.albumIds
                 val dlArtistNames = offline?.artistNames
+                val isAvailableArtist = dlArtistNames?.let { names -> { artist: ArtistEntity -> artist.name in names } }
+                val isAvailableAlbum = dlAlbumIds?.let { ids -> { album: AlbumEntity -> album.id in ids } }
+                val isAvailableTrack = dlTrackIds?.let { ids -> { track: TrackEntity -> track.id in ids } }
 
-                val artists = artistDao.searchCanonical(serverId, query, limit = 5)
-                    .let { if (dlArtistNames != null) it.filter { a -> a.name in dlArtistNames } else it }
-                val albums = albumDao.search(serverId, query, limit = 10)
-                    .let { if (dlAlbumIds != null) it.filter { a -> a.id in dlAlbumIds } else it }
-                val tracks = trackDao.search(serverId, query, limit = 20)
-                    .let { if (dlTrackIds != null) it.filter { t -> t.id in dlTrackIds } else it }
+                val artists = availableFirst(SEARCH_ARTISTS, isAvailableArtist) {
+                    artistDao.searchCanonical(serverId, query, it)
+                }
+                val albums = availableFirst(SEARCH_ALBUMS, isAvailableAlbum) {
+                    albumDao.search(serverId, query, it)
+                }
+                val tracks = availableFirst(SEARCH_TRACKS, isAvailableTrack) {
+                    trackDao.search(serverId, query, it)
+                }
                 session.notifySearchResultChanged(
                     browser, query, artists.size + albums.size + tracks.size, params,
                 )
@@ -1676,15 +1716,21 @@ class HarlowMediaService : MediaLibraryService() {
                 val dlTrackIds = offline?.trackIds
                 val dlAlbumIds = offline?.albumIds
                 val dlArtistNames = offline?.artistNames
+                val isAvailableArtist = dlArtistNames?.let { names -> { artist: ArtistEntity -> artist.name in names } }
+                val isAvailableAlbum = dlAlbumIds?.let { ids -> { album: AlbumEntity -> album.id in ids } }
+                val isAvailableTrack = dlTrackIds?.let { ids -> { track: TrackEntity -> track.id in ids } }
 
-                val artists = artistDao.searchCanonical(serverId, query, limit = 5)
-                    .let { if (dlArtistNames != null) it.filter { a -> a.name in dlArtistNames } else it }
+                val artists = availableFirst(SEARCH_ARTISTS, isAvailableArtist) {
+                    artistDao.searchCanonical(serverId, query, it)
+                }
                     .map { it.toBrowsableItem() }
-                val albums = albumDao.search(serverId, query, limit = 10)
-                    .let { if (dlAlbumIds != null) it.filter { a -> a.id in dlAlbumIds } else it }
+                val albums = availableFirst(SEARCH_ALBUMS, isAvailableAlbum) {
+                    albumDao.search(serverId, query, it)
+                }
                     .map { it.toBrowsableItem() }
-                val tracks = trackDao.search(serverId, query, limit = 20)
-                    .let { if (dlTrackIds != null) it.filter { t -> t.id in dlTrackIds } else it }
+                val tracks = availableFirst(SEARCH_TRACKS, isAvailableTrack) {
+                    trackDao.search(serverId, query, it)
+                }
                     .map { it.toPlayableItem() }
 
                 LibraryResult.ofItemList(ImmutableList.copyOf(artists + albums + tracks), params)
@@ -1833,6 +1879,10 @@ class HarlowMediaService : MediaLibraryService() {
         )
         private const val HOME_ROW_SIZE = 3
         private const val AA_MAX_ITEMS = 500
+        private const val MOST_PLAYED_POOL = 20
+        private const val SEARCH_ARTISTS = 5
+        private const val SEARCH_ALBUMS = 10
+        private const val SEARCH_TRACKS = 20
         private const val EXTRA_PARENT_ID = "dev.harlow.PARENT_ID"
         private const val GENRE_SEPARATOR = "|||"
         private const val CONTENT_STYLE_BROWSABLE_HINT =
